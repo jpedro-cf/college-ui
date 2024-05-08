@@ -1,15 +1,47 @@
+import { env } from '@/config/env'
 import { IUser } from '@/interfaces/entities/User'
-import { createContext, useContext, useState } from 'react'
+import { LoadingPage } from '@/pages/LoadingPage'
+import axios from 'axios'
+import { createContext, useContext, useEffect, useState } from 'react'
 
-const AuthContext = createContext<IUser | null>(null)
+interface AuthContextsTypes {
+    user: IUser | null
+    setUserFunction: (user: IUser | null) => void
+}
+
+const AuthContext = createContext<AuthContextsTypes | undefined>(undefined)
 
 type Props = {
     children: string | JSX.Element | JSX.Element[]
 }
-export function AuthProvider({ children }: Props) {
+export default function AuthProvider({ children }: Props) {
     const [user, setUser] = useState<IUser | null>(null)
+    const [loading, setLoading] = useState(true)
 
-    return <AuthContext.Provider value={user}> {children} </AuthContext.Provider>
+    const setUserFunction = (user: IUser | null) => {
+        setUser(user)
+    }
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await axios.get(env.base_url + '/current_user', { withCredentials: true })
+                setUser(response.data)
+            } catch (error) {
+                setUser(null)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchData()
+    }, [user])
+
+    if (loading) {
+        return <LoadingPage />
+    }
+
+    return <AuthContext.Provider value={{ user, setUserFunction }}> {children} </AuthContext.Provider>
 }
 
 export const useAuth = () => {
