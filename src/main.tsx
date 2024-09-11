@@ -5,16 +5,19 @@ import App from './App.tsx'
 import './global.css'
 import { Toaster } from '@/components/ui/toaster'
 import AuthProvider from './context/AuthContext.tsx'
+import { ThemeProvider } from './context/ThemeContext.tsx'
 
 const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-        <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-                <App />
-                <Toaster />
-            </AuthProvider>
-        </QueryClientProvider>
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+            <QueryClientProvider client={queryClient}>
+                <AuthProvider>
+                    <App />
+                    <Toaster />
+                </AuthProvider>
+            </QueryClientProvider>
+        </ThemeProvider>
     </React.StrictMode>
 )

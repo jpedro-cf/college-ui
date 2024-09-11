@@ -1,13 +1,15 @@
-import { PropsWithChildren, useEffect } from 'react'
+import { PropsWithChildren, ReactNode, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useAuth } from '@/context/AuthContext'
 
-type ProtectedRouteProps = PropsWithChildren
+interface Props {
+    children: ReactNode
+    roles: string[]
+}
 
-export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+export default function ProtectedRoute({ children }: Props) {
     const { user } = useAuth()
-
     const navigate = useNavigate()
 
     useEffect(() => {

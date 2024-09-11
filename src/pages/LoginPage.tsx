@@ -1,8 +1,8 @@
 import { useAuth } from '@/context/AuthContext'
-import { useLoginMutation } from '@/services/auth/login'
+import { useLoginMutation } from '@/services/auth'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { AtSign, Key, SendHorizonal, SquareLibrary } from 'lucide-react'
@@ -24,7 +24,6 @@ export const LoginFormSchema = z.object({
 export function LoginPage() {
     const { mutate, isPending } = useLoginMutation()
     const { user } = useAuth()
-    console.log(user)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -43,12 +42,12 @@ export function LoginPage() {
                 })
                 navigate('/', { replace: true })
             },
-            onError: (error) => {
+            onError: (error: any) => {
                 console.log(error)
                 toast({
                     variant: 'destructive',
                     title: 'Erro!',
-                    description: error.response?.data
+                    description: error?.response?.data?.message ?? 'Erro ao realizar operação'
                 })
             }
         })
@@ -64,10 +63,10 @@ export function LoginPage() {
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(handleLogin)} className="w-full lg:w-3/5">
                         <h1 className="text-2xl flex items-center gap-3 relative left-[-3px] font-semibold mb-2">
-                            <SquareLibrary size={32} className="text-blue-600 inline" />
+                            <SquareLibrary size={32} className="text-primary inline" />
                             Olá estudante!
                         </h1>
-                        <h2 className="mb-5 text-sm text-slate-600">
+                        <h2 className="mb-5 text-sm">
                             Realize o login abaixo para acessar uma variedade de desafios e questões para testar suas
                             habilidades.
                         </h2>
@@ -116,18 +115,16 @@ export function LoginPage() {
                                 </FormItem>
                             )}
                         />
-                        <Button variant={'primary'} size={'lg'} className="mt-6 w-full">
-                            {!isPending && (
-                                <span className="flex items-center">
-                                    Fazer Login <SendHorizonal className="ms-5" size={20} />
-                                </span>
-                            )}
-                            {isPending && <PulseLoader color="#fff" size={8} />}
+                        <NavLink to={'/registrar'} className={'mt-3 block text-primary underline font-semibold'}>
+                            Registrar-se
+                        </NavLink>
+                        <Button variant={'primary'} size={'lg'} className="mt-6 w-full" disabled={isPending}>
+                            Fazer Login <SendHorizonal className="ms-5" size={20} />
                         </Button>
                     </form>
                 </Form>
             </div>
-            <div className="w-1/2 hidden md:block min-h-screen bg-[linear-gradient(to_right_bottom,rgba(44,59,84,0.8),rgba(16,32,71,0.8)),url('/login-bg.jpg')]"></div>
+            <div className="w-1/2 hidden md:block min-h-screen bg-[linear-gradient(to_right_bottom,rgba(62,44,84,0.8),rgba(177,31,203,0.8)),url('/login-bg.jpg')]"></div>
         </div>
     )
 }

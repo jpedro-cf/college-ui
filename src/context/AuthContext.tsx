@@ -1,5 +1,5 @@
 import { env } from '@/config/env'
-import { IUser } from '@/interfaces/entities/User'
+import { IUser } from '@/interfaces/User'
 import { LoadingPage } from '@/pages/LoadingPage'
 import axios from 'axios'
 import { createContext, useContext, useEffect, useState } from 'react'
@@ -25,7 +25,7 @@ export default function AuthProvider({ children }: Props) {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get(env.base_url + '/current_user', { withCredentials: true })
+                const response = await axios.get(env.base_url + '/auth/me', { withCredentials: true })
                 setUser(response.data)
             } catch (error) {
                 setUser(null)

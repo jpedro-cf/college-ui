@@ -1,3 +1,5 @@
+import { useQuestions } from '@/services/questions'
+
 export function HomePage() {
-    return <>Home page</>
+    return <></>
 }
