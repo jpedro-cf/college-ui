@@ -43,7 +43,6 @@ export function LoginPage() {
                 navigate('/', { replace: true })
             },
             onError: (error: any) => {
-                console.log(error)
                 toast({
                     variant: 'destructive',
                     title: 'Erro!',

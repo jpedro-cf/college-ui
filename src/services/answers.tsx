@@ -1,6 +1,7 @@
 import { AnswerQuestionFormSchema } from '@/components/forms/AnswerQuestionForm'
 import { env } from '@/config/env'
-import { useQuery } from '@tanstack/react-query'
+import { IPerformance } from '@/interfaces/Performance'
+import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import axios from 'axios'
 import { subMonths } from 'date-fns'
 import { z } from 'zod'
@@ -27,10 +28,24 @@ export const useAnswersPerformance = (date: Date) => {
             },
             withCredentials: true
         })
-        return res.data
+        return res.data as IPerformance
     }
     return useQuery({
         queryKey: ['performance', date],
+        queryFn: submit,
+        retry: false
+    })
+}
+
+export const useAnswers = () => {
+    const submit = async () => {
+        const res = await axios.get(env.base_url + '/answers', {
+            withCredentials: true
+        })
+        return res.data
+    }
+    return useQuery({
+        queryKey: ['answers'],
         queryFn: submit,
         retry: false
     })

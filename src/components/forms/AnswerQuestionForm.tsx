@@ -58,7 +58,6 @@ export function AnswerQuestionForm({ question }: Props) {
     })
     function onSubmit(values: z.infer<typeof AnswerQuestionFormSchema>) {
         mutation.mutate(values)
-        console.log(form.getValues())
     }
     return (
         <Form {...form}>

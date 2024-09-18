@@ -59,7 +59,7 @@ export const Sidebar = () => {
                 <ul className="flex flex-col gap-3">
                     <li>
                         <NavLink
-                            to="/"
+                            to="/dashboard"
                             className={({ isActive, isPending }) =>
                                 linksProperties({ active: isActive, pending: isPending })
                             }
@@ -70,7 +70,7 @@ export const Sidebar = () => {
                     </li>
                     <li>
                         <NavLink
-                            to="/questoes"
+                            to="/"
                             className={({ isActive, isPending }) =>
                                 linksProperties({ active: isActive, pending: isPending })
                             }

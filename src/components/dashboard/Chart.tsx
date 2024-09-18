@@ -13,7 +13,7 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { SkeletonCard } from '../skeletons/SkeletonCard'
 import { IPerformance } from '@/interfaces/Performance'
-import { subDays, subMonths, subYears } from 'date-fns'
+import { format, subDays, subMonths, subYears } from 'date-fns'
 import { date } from 'zod'
 
 export const description = 'An interactive area chart'
@@ -45,14 +45,17 @@ export function PerformanceChart({ performance, timeRange, setTimeRange, onTimeR
         '3m': subMonths(new Date(), 3),
         '30d': subDays(new Date(), 30)
     }
-
+    const chartData =
+        performance.performance.length > 1
+            ? performance.performance
+            : [{ incorrect: 0, correct: 0, date: format(dateMap[timeRange], 'yyyy-MM-dd') }, ...performance.performance]
     function timeRangeChange(selected: string) {
         setTimeRange(selected)
         onTimeRangeChange(dateMap[selected] ?? '1y')
     }
 
     return (
-        <Card className="dark:border-stone-600 col-span-2">
+        <Card className="dark:border-stone-600 lg:col-span-2">
             <CardHeader className="flex items-center gap-2 space-y-0 border-b dark:border-stone-600 py-5 sm:flex-row">
                 <div className="grid flex-1 gap-1 text-center sm:text-left">
                     <CardTitle>Performance geral</CardTitle>
@@ -79,8 +82,8 @@ export function PerformanceChart({ performance, timeRange, setTimeRange, onTimeR
                 </Select>
             </CardHeader>
             <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-                <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
-                    <AreaChart data={performance.performance}>
+                <ChartContainer config={chartConfig} className="aspect-auto h-[250px] max-w-full w-full">
+                    <AreaChart data={chartData}>
                         <defs>
                             <linearGradient id="fillCorrect" x1="0" y1="0" x2="0" y2="1">
                                 <stop offset="5%" stopColor="var(--color-correct)" stopOpacity={0.8} />

@@ -1,8 +1,9 @@
+import { UserAnswers } from '@/components/dashboard/Answers'
 import { DashboardPerformance } from '@/components/dashboard/Performance'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAnswersPerformance } from '@/services/answers'
 
-export function HomePage() {
+export function DashboardPage() {
     return (
         <>
             <h2 className="font-semibold text-xl">Dashboard</h2>
@@ -16,9 +17,11 @@ export function HomePage() {
                     <TabsTrigger value="answers">Questões respondidas</TabsTrigger>
                 </TabsList>
                 <TabsContent value="dashboard">
-                    <DashboardPerformance />{' '}
+                    <DashboardPerformance />
                 </TabsContent>
-                <TabsContent value="answers">Answers</TabsContent>
+                <TabsContent value="answers">
+                    <UserAnswers />
+                </TabsContent>
             </Tabs>
         </>
     )
