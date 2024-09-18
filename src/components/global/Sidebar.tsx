@@ -40,7 +40,7 @@ export const Sidebar = () => {
                                 {auth.user.name}
                             </span>
                             <span className="block max-w-[100px] truncate text-ellipsis whitespace-nowrap">
-                                {auth.user.roles[0]}
+                                {auth.user.points} Pontos
                             </span>
                         </div>
                     </div>

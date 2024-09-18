@@ -35,7 +35,7 @@ export default function AuthProvider({ children }: Props) {
         }
 
         fetchData()
-    }, [user])
+    }, [])
 
     if (loading) {
         return <LoadingPage />
