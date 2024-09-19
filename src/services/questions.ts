@@ -14,6 +14,7 @@ export const useQuestions = () => {
     }
     return useQuery({
         queryKey: ['questions'],
+        refetchOnWindowFocus: false,
         queryFn: submit
     })
 }

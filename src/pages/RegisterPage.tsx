@@ -12,20 +12,25 @@ import { PulseLoader } from 'react-spinners'
 import { IUser } from '@/interfaces/User'
 import { useRegisterMutation } from '@/services/auth'
 
-export const RegisterFormSchema = z.object({
-    name: z.string({
-        required_error: 'Nome é obrigatório.'
-    }),
-    email: z.string({
-        required_error: 'E-mail é obrigatório.'
-    }),
-    password: z.string({
-        required_error: 'Senha é obrigatória.'
-    }),
-    password_confirmation: z.string({
-        required_error: 'Confirmação de senha é obrigatória.'
+export const RegisterFormSchema = z
+    .object({
+        name: z.string({
+            required_error: 'Nome é obrigatório.'
+        }),
+        email: z.string({
+            required_error: 'E-mail é obrigatório.'
+        }),
+        password: z.string({
+            required_error: 'Senha é obrigatória.'
+        }),
+        password_confirmation: z.string({
+            required_error: 'Confirmação de senha é obrigatória.'
+        })
     })
-})
+    .refine((data) => data.password === data.password_confirmation, {
+        path: ['password_confirmation'], // caminho do erro
+        message: 'As senhas não coincidem.' // mensagem de erro
+    })
 
 export function RegisterPage() {
     const { mutate, isPending } = useRegisterMutation()

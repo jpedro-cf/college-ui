@@ -33,6 +33,7 @@ export const useAnswersPerformance = (date: Date) => {
     return useQuery({
         queryKey: ['performance', date],
         queryFn: submit,
+        refetchOnWindowFocus: false,
         retry: false
     })
 }
@@ -47,6 +48,7 @@ export const useAnswers = () => {
     return useQuery({
         queryKey: ['answers'],
         queryFn: submit,
+        refetchOnWindowFocus: false,
         retry: false
     })
 }
