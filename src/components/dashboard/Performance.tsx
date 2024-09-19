@@ -19,11 +19,11 @@ export function DashboardPerformance() {
 
     if (performance.isError) {
         return (
-            <Alert>
+            <Alert className="mt-3">
                 <InfoIcon className="h-4 w-4" />
-                <AlertTitle>Não foi possível realizar essa operação!</AlertTitle>
+                <AlertTitle>Não foi possível carregar suas informações!</AlertTitle>
                 <AlertDescription>
-                    Recarregue a página, verifique se está autenticado ou tente novamente mais tarde.
+                    Verifique se está autenticado, se respondeu à uma questão ou tente novamente mais tarde.
                 </AlertDescription>
             </Alert>
         )

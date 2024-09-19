@@ -5,6 +5,7 @@ import { LoginPage } from './pages/LoginPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { Layout } from './components/global/Layout'
 import { QuestionsPage } from './pages/QuestionsPage'
+import { AdminPage } from './pages/AdminPage'
 
 const router = createBrowserRouter([
     {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
     {
         path: '/login',
         element: <LoginPage />
+    },
+    {
+        path: '/admin',
+        element: <ProtectedRoute roles={['admin']} children={<Layout children={<AdminPage />} />} />
     }
 ])
 

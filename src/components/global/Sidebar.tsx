@@ -1,5 +1,5 @@
 import { cva } from 'class-variance-authority'
-import { GalleryVerticalEnd, Home, List } from 'lucide-react'
+import { GalleryVerticalEnd, Home, List, ShieldCheck } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { ThemeToggler } from './ThemeToggler'
 import { Avatar, AvatarFallback } from '../ui/avatar'
@@ -88,6 +88,17 @@ export const Sidebar = () => {
                         >
                             <List size={16} />
                             Categorias
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink
+                            to="/admin"
+                            className={({ isActive, isPending }) =>
+                                linksProperties({ active: isActive, pending: isPending })
+                            }
+                        >
+                            <ShieldCheck size={16} />
+                            Admin
                         </NavLink>
                     </li>
                 </ul>

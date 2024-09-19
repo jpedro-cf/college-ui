@@ -68,3 +68,9 @@
         font-family: 'Inter', sans-serif;
     }
 }
+@layer utilities {
+    .popover-content-width-full {
+        width: var(--radix-popover-trigger-width);
+        max-height: var(--radix-popover-content-available-height);
+    }
+}

@@ -10,7 +10,11 @@ export function ThemeToggler() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline" size={'icon'} className="mb-5 text-start w-7 h-7 dark:bg-stone-700">
+                <Button
+                    variant="outline"
+                    size={'icon'}
+                    className="mb-5 text-start w-7 h-7 bg-white border-none dark:bg-stone-700"
+                >
                     <Sun size={14} className="dark:hidden" />
                     <Moon size={14} className="hidden dark:block" />
                 </Button>

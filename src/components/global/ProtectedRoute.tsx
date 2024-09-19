@@ -8,13 +8,16 @@ interface Props {
     roles: string[]
 }
 
-export default function ProtectedRoute({ children }: Props) {
+export default function ProtectedRoute({ children, roles }: Props) {
     const { user } = useAuth()
     const navigate = useNavigate()
 
     useEffect(() => {
         if (user === null) {
-            navigate('/login', { replace: true })
+            navigate('/', { replace: true })
+        }
+        if (!user?.roles.every((r) => roles.includes(r))) {
+            navigate('/', { replace: true })
         }
     }, [navigate, user])
 
