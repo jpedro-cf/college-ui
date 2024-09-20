@@ -34,7 +34,7 @@ export const useAnswersPerformance = (date: Date) => {
         queryKey: ['performance', date],
         queryFn: submit,
         refetchOnWindowFocus: false,
-        retry: false
+        retry: 1
     })
 }
 

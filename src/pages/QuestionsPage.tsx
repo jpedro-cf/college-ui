@@ -13,14 +13,14 @@ export function QuestionsPage() {
             <h2 className="font-semibold text-xl">Todas as questões</h2>
             <span className="text-sm">Responda questões, teste suas habilidades e aprimore seu aprendizado.</span>
 
-            {(questions.isLoading || questions.isRefetching || questions.isError) && (
+            {(questions.isLoading || questions.isRefetching) && (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-9 mt-3">
                     {Array.from({ length: 6 }, (_, i) => i + 1).map((item) => (
                         <SkeletonCard key={item} />
                     ))}
                 </div>
             )}
-            {questions.data?.questions?.length <= 0 && (
+            {(questions.data?.questions?.length <= 0 || questions.isError) && (
                 <Alert className="mt-3">
                     <InfoIcon className="h-4 w-4" />
                     <AlertTitle>Oops!</AlertTitle>

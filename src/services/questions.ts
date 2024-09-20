@@ -16,9 +16,10 @@ export const useQuestions = () => {
         return res.data
     }
     return useQuery({
+        queryFn: submit,
         queryKey: ['questions'],
-        refetchOnWindowFocus: false,
-        queryFn: submit
+        retry: 2,
+        refetchOnWindowFocus: false
     })
 }
 
