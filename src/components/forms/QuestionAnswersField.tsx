@@ -48,7 +48,6 @@ export function QuestionAnswersField({ onCorrectSelect, form, name }: Props) {
         control,
         name
     })
-    const items = watch(name)
 
     const addItem = (value: string) => {
         if (value.length > 1) {
@@ -67,18 +66,20 @@ export function QuestionAnswersField({ onCorrectSelect, form, name }: Props) {
         setValue(name, updatedAnswers)
     }
 
+    const items = watch(name)
+
     return (
         <>
             <div className="flex items-end gap-3 col-span-3">
                 <FormItem>
-                    <FormLabel>Adicionar respostas</FormLabel>
+                    <FormLabel>Adicionar respostas *</FormLabel>
                     <Input
                         placeholder="Digite o nome da resposta"
                         value={input}
                         onChange={(field) => setInput(field.currentTarget.value)}
                     />
                 </FormItem>
-                <Button variant={'primary'} onClick={() => addItem(input)}>
+                <Button type="button" variant={'primary'} onClick={() => addItem(input)}>
                     Adicionar <PlusCircle className="ms-3" size={16} />
                 </Button>
             </div>
@@ -96,41 +97,38 @@ export function QuestionAnswersField({ onCorrectSelect, form, name }: Props) {
                 className="w-full"
             >
                 {items?.map((item: IAnswer, i: number) => (
-                    <FormField
-                        name={`answers.${i}.title`}
-                        control={form.control}
-                        render={({ field }) => (
-                            <div className="flex w-full" key={i}>
-                                <FormLabel
-                                    htmlFor={`answer-${item.id}`}
-                                    className={optionProperties({
-                                        active: selected === i + 1
-                                    })}
-                                >
-                                    <RadioGroupItem
-                                        value={item.id.toString()}
-                                        id={`answer-${item.id}`}
-                                        className="border-white focus:border-primary"
-                                    />
-                                </FormLabel>
-                                <Input
-                                    value={field.value}
-                                    onChange={field.onChange}
-                                    placeholder="Resposta"
-                                    className="h-full rounded-e-none rounded-s-none"
-                                />
-                                <Button
-                                    size={'icon'}
-                                    variant={'destructive'}
-                                    className="w-10 rounded-s-none h-full"
-                                    onClick={() => deleteItem(item.id)}
-                                >
-                                    {' '}
-                                    <XCircle size={16} />{' '}
-                                </Button>
-                            </div>
-                        )}
-                    />
+                    <div className="flex w-full" key={i}>
+                        <FormLabel
+                            htmlFor={`answer-${item.id}`}
+                            className={optionProperties({
+                                active: selected === i + 1
+                            })}
+                        >
+                            <RadioGroupItem
+                                value={item.id.toString()}
+                                id={`answer-${item.id}`}
+                                className="border-primary-300 focus:border-primary-800"
+                            />
+                        </FormLabel>
+                        <Input
+                            value={item.title}
+                            onChange={(event) => {
+                                const updatedItems = [...items] // Cria uma cópia do array de items
+                                updatedItems[i].title = event.currentTarget.value // Atualiza o título no item correto
+                                setValue(name, updatedItems) // Usa o setValue para atualizar o formulário
+                            }}
+                            placeholder="Resposta"
+                            className="h-full rounded-e-none rounded-s-none"
+                        />
+                        <Button
+                            size={'icon'}
+                            variant={'destructive'}
+                            className="w-10 rounded-s-none h-full"
+                            onClick={() => deleteItem(i)}
+                        >
+                            <XCircle size={16} />{' '}
+                        </Button>
+                    </div>
                 ))}
             </RadioGroup>
         </>

@@ -1,21 +1,24 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '../ui/form'
 import { Input } from '../ui/input'
-import { ComboBox } from '../ui/combo-box'
 import { useState } from 'react'
 import { useCategories } from '@/services/categories'
 import { ICategory } from '@/interfaces/Category'
 import { Button } from '../ui/button'
-import { Check, CheckCircle } from 'lucide-react'
+import { CheckCircle } from 'lucide-react'
 import { QuestionAnswersField } from './QuestionAnswersField'
+import useDebounce from '@/hooks/useDebounce'
+import { useCreateQuestion } from '@/services/questions'
+import { useNavigate } from 'react-router-dom'
+import { MultiSelect } from '../ui/multi-select'
 
-export const QuestionFormSchema = z
+export const CreateQuestionFormSchema = z
     .object({
         question: z.string(),
         material: z.string().optional().nullable(),
-        category_id: z.string().optional().nullable(),
+        categories: z.array(z.string()).nullable(),
         answers: z.array(
             z.object({
                 id: z.number(),
@@ -27,7 +30,7 @@ export const QuestionFormSchema = z
     .refine(
         (data) => {
             // Valida se o campo correct está vazio ou corresponde a algum ID em answers
-            return data.correct || data.answers.some((answer) => answer.id === data.correct)
+            return data.answers.some((answer) => answer.id == data.correct) && data.correct
         },
         {
             path: ['answers'], // Aponta o erro para o campo "answers"
@@ -37,14 +40,24 @@ export const QuestionFormSchema = z
 
 export function QuestionForm() {
     const [category, setCategory] = useState('')
-    const categories = useCategories(category)
+    const debouncedCategory = useDebounce(category, 700)
+    const categories = useCategories(debouncedCategory)
 
-    const form = useForm<z.infer<typeof QuestionFormSchema>>({
-        resolver: zodResolver(QuestionFormSchema)
+    const createQuestion = useCreateQuestion()
+
+    const navigate = useNavigate()
+
+    const form = useForm<z.infer<typeof CreateQuestionFormSchema>>({
+        resolver: zodResolver(CreateQuestionFormSchema)
     })
+    const [selectedOption, setSelectedOption] = useState<string[]>([])
 
-    function create(values: z.infer<typeof QuestionFormSchema>) {
-        console.log(values)
+    function create(values: z.infer<typeof CreateQuestionFormSchema>) {
+        createQuestion.mutate(values, {
+            onSuccess: () => {
+                navigate('/', { replace: true })
+            }
+        })
     }
 
     function searchCategories(value: string) {
@@ -96,17 +109,22 @@ export function QuestionForm() {
                     )}
                 />
                 <FormField
-                    name="category_id"
+                    name="categories"
                     control={form.control}
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Categoria</FormLabel>
                             <FormControl>
-                                <ComboBox
-                                    label="Selecionar categoria"
-                                    items={categoryItems}
+                                <MultiSelect
+                                    multiple={true}
+                                    clearable={true}
                                     onSearchChange={searchCategories}
-                                    onSelect={field.onChange}
+                                    emptyText="Nenhuma categoria encontrada"
+                                    searchPlaceholder="Pesquisar"
+                                    selectPlaceholder="Selecionar categorias"
+                                    options={categoryItems}
+                                    value={field.value ?? undefined}
+                                    onValueChange={field.onChange}
                                 />
                             </FormControl>
                         </FormItem>
@@ -118,7 +136,7 @@ export function QuestionForm() {
                     onCorrectSelect={(selected: number) => form.setValue('correct', selected)}
                 />
                 <div className="col-span-3">
-                    <Button variant={'primary'} type="submit">
+                    <Button variant={'primary'} type="submit" disabled={createQuestion.isPending}>
                         Enviar <CheckCircle size={16} className="ms-3" />{' '}
                     </Button>
                 </div>
