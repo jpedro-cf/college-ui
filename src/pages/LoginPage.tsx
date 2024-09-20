@@ -84,7 +84,7 @@ export function LoginPage() {
                                             placeholder="E-mail"
                                             className="rounded-e-none h-11 border-stone-300"
                                         />
-                                        <span className="border border-stone-500 w-12 h-11 border-s-0 rounded-e-md px-1 flex items-center justify-center">
+                                        <span className="border border-stone-300 dark:border-stone-500 w-12 h-11 border-s-0 rounded-e-md px-1 flex items-center justify-center">
                                             <AtSign size={14} />
                                         </span>
                                     </div>
@@ -106,7 +106,7 @@ export function LoginPage() {
                                             placeholder="******"
                                             className="rounded-e-none h-11 border-stone-300"
                                         />
-                                        <span className="border border-stone-500 w-12 h-11 border-s-0  rounded-e-md px-1 flex items-center justify-center">
+                                        <span className="border border-stone-300 dark:border-stone-500 w-12 h-11 border-s-0  rounded-e-md px-1 flex items-center justify-center">
                                             <Key size={14} />
                                         </span>
                                     </div>

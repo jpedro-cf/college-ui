@@ -90,17 +90,19 @@ export const Sidebar = () => {
                             Categorias
                         </NavLink>
                     </li>
-                    <li>
-                        <NavLink
-                            to="/admin"
-                            className={({ isActive, isPending }) =>
-                                linksProperties({ active: isActive, pending: isPending })
-                            }
-                        >
-                            <ShieldCheck size={16} />
-                            Admin
-                        </NavLink>
-                    </li>
+                    {auth.user?.roles.includes('admin') && (
+                        <li>
+                            <NavLink
+                                to="/admin"
+                                className={({ isActive, isPending }) =>
+                                    linksProperties({ active: isActive, pending: isPending })
+                                }
+                            >
+                                <ShieldCheck size={16} />
+                                Admin
+                            </NavLink>
+                        </li>
+                    )}
                 </ul>
             </nav>
         </aside>

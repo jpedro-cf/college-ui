@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Input } from '../ui/input'
-import { FormControl, FormItem, FormLabel } from '../ui/form'
+import { FormControl, FormField, FormItem, FormLabel } from '../ui/form'
 import { Button } from '../ui/button'
 import { PlusCircle, XCircle } from 'lucide-react'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
@@ -8,7 +8,7 @@ import { cva } from 'class-variance-authority'
 import { Control, useFieldArray, UseFormReturn } from 'react-hook-form'
 
 const optionProperties = cva(
-    'flex gap-3 items-center border cursor-pointer p-3 rounded-md w-full rounded-e-none transition-colors',
+    'flex gap-3 items-center border cursor-pointer p-3 rounded-md w-auto rounded-e-none transition-colors',
     {
         variants: {
             active: {
@@ -66,13 +66,14 @@ export function QuestionAnswersField({ onCorrectSelect, form, name }: Props) {
         }))
         setValue(name, updatedAnswers)
     }
+
     return (
         <>
             <div className="flex items-end gap-3 col-span-3">
                 <FormItem>
-                    <FormLabel>Adicionar questão</FormLabel>
+                    <FormLabel>Adicionar respostas</FormLabel>
                     <Input
-                        placeholder="Digite o nome da questão"
+                        placeholder="Digite o nome da resposta"
                         value={input}
                         onChange={(field) => setInput(field.currentTarget.value)}
                     />
@@ -81,20 +82,25 @@ export function QuestionAnswersField({ onCorrectSelect, form, name }: Props) {
                     Adicionar <PlusCircle className="ms-3" size={16} />
                 </Button>
             </div>
-            <FormItem className="mb-5">
-                {errors[name] && (
-                    <span className="text-red-400 text-sm leading-none">{errors?.[name]?.message as any}</span>
-                )}
-                <RadioGroup
-                    onValueChange={(value) => {
-                        onCorrectSelect(Number(value))
-                        setSelected(Number(value))
-                    }}
-                    value={selected?.toString()}
-                >
-                    {items?.map((item: IAnswer, i: number) => (
-                        <FormControl key={i}>
-                            <div className="flex w-full">
+            {errors[name] && (
+                <span className="text-red-400 text-sm leading-none block col-span-3">
+                    {errors?.[name]?.message as any}
+                </span>
+            )}
+            <RadioGroup
+                onValueChange={(value) => {
+                    onCorrectSelect(Number(value))
+                    setSelected(Number(value))
+                }}
+                value={selected?.toString()}
+                className="w-full"
+            >
+                {items?.map((item: IAnswer, i: number) => (
+                    <FormField
+                        name={`answers.${i}.title`}
+                        control={form.control}
+                        render={({ field }) => (
+                            <div className="flex w-full" key={i}>
                                 <FormLabel
                                     htmlFor={`answer-${item.id}`}
                                     className={optionProperties({
@@ -106,8 +112,13 @@ export function QuestionAnswersField({ onCorrectSelect, form, name }: Props) {
                                         id={`answer-${item.id}`}
                                         className="border-white focus:border-primary"
                                     />
-                                    <span>{item.title}</span>
                                 </FormLabel>
+                                <Input
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    placeholder="Resposta"
+                                    className="h-full rounded-e-none rounded-s-none"
+                                />
                                 <Button
                                     size={'icon'}
                                     variant={'destructive'}
@@ -118,10 +129,10 @@ export function QuestionAnswersField({ onCorrectSelect, form, name }: Props) {
                                     <XCircle size={16} />{' '}
                                 </Button>
                             </div>
-                        </FormControl>
-                    ))}
-                </RadioGroup>
-            </FormItem>
+                        )}
+                    />
+                ))}
+            </RadioGroup>
         </>
     )
 }
