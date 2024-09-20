@@ -18,7 +18,6 @@ export interface ComboboxOption {
 type ComboboxPropsSingle = {
     options: ComboboxOption[]
     emptyText?: string
-    clearable?: boolean
     selectPlaceholder?: string
     searchPlaceholder?: string
     multiple?: false
@@ -30,7 +29,6 @@ type ComboboxPropsSingle = {
 type ComboboxPropsMultiple = {
     options: ComboboxOption[]
     emptyText?: string
-    clearable?: boolean
     selectPlaceholder?: string
     searchPlaceholder?: string
     multiple: true
@@ -42,16 +40,11 @@ type ComboboxPropsMultiple = {
 export type ComboboxProps = ComboboxPropsSingle | ComboboxPropsMultiple
 
 export const handleSingleSelect = (props: ComboboxPropsSingle, option: ComboboxOption) => {
-    if (props.clearable) {
-        props.onValueChange?.(option.value === props.value ? '' : option.value)
-    } else {
-        props.onValueChange?.(option.value)
-    }
+    props.onValueChange?.(option.value === props.value ? '' : option.value)
 }
 
 export const handleMultipleSelect = (props: ComboboxPropsMultiple, option: ComboboxOption) => {
     if (props.value?.includes(option.value)) {
-        if (!props.clearable && props.value.length === 1) return false
         props.onValueChange?.(props.value.filter((value) => value !== option.value))
     } else {
         props.onValueChange?.([...(props.value ?? []), option.value])

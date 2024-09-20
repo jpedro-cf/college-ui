@@ -9,6 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '../ui/form'
 import { Button } from '../ui/button'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 import { cva } from 'class-variance-authority'
+import { useNavigate } from 'react-router-dom'
 
 const optionProperties = cva('flex gap-3 cursor-pointer p-3 rounded-md transition-colors', {
     variants: {
@@ -32,6 +33,7 @@ interface Props {
 }
 
 export function AnswerQuestionForm({ question }: Props) {
+    const navigate = useNavigate()
     const form = useForm<z.infer<typeof AnswerQuestionFormSchema>>({
         resolver: zodResolver(AnswerQuestionFormSchema),
         defaultValues: {
@@ -47,6 +49,7 @@ export function AnswerQuestionForm({ question }: Props) {
                 variant: 'success',
                 description: <div>Veja o seu resultado na página de respostas.</div>
             })
+            navigate('/dashboard', { replace: true })
         },
         onError: (error: any) => {
             toast({

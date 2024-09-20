@@ -6,7 +6,8 @@ export const useCategories = (search: string) => {
     const submit = async () => {
         const res = await axios.get(env.base_url + '/categories', {
             params: {
-                search
+                search: search ?? '',
+                per_page: 50
             },
             withCredentials: true
         })

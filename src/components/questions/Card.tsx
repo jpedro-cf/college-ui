@@ -20,7 +20,7 @@ export function QuestionsCard({ question }: Props) {
             <CardHeader className="pb-2">
                 <CardTitle>
                     <div className="flex gap-1 items-center">
-                        <LibraryBig size={18} />
+                        <LibraryBig size={18} className="min-w-8" />
                         {question.question}
                     </div>
                 </CardTitle>
@@ -30,7 +30,7 @@ export function QuestionsCard({ question }: Props) {
             </CardHeader>
             <CardContent className="pb-3">
                 <span className="text-sm text-foreground/60">Categorias</span>
-                <div className="flex flex-wrap mt-1">
+                <div className="flex flex-wrap mt-1 gap-1">
                     {question.categories?.map((category, i) => (
                         <NavLink key={i} to={`/categorias/${category.id}`}>
                             <Badge variant={'outline'}>{category.title}</Badge>

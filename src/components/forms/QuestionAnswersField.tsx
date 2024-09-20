@@ -31,11 +31,12 @@ interface Props {
     onCorrectSelect: (id: number) => void
     form: UseFormReturn<any>
     name: string
+    disabled?: boolean
 }
 
-export function QuestionAnswersField({ onCorrectSelect, form, name }: Props) {
+export function QuestionAnswersField({ onCorrectSelect, form, name, disabled }: Props) {
     const [input, setInput] = useState('')
-    const [selected, setSelected] = useState<number>()
+    const selected = form.getValues('correct')
 
     const {
         control,
@@ -91,7 +92,7 @@ export function QuestionAnswersField({ onCorrectSelect, form, name }: Props) {
             <RadioGroup
                 onValueChange={(value) => {
                     onCorrectSelect(Number(value))
-                    setSelected(Number(value))
+                    form.setValue('correct', Number(value))
                 }}
                 value={selected?.toString()}
                 className="w-full"
@@ -105,6 +106,7 @@ export function QuestionAnswersField({ onCorrectSelect, form, name }: Props) {
                             })}
                         >
                             <RadioGroupItem
+                                disabled={disabled}
                                 value={item.id.toString()}
                                 id={`answer-${item.id}`}
                                 className="border-primary-300 focus:border-primary-800"

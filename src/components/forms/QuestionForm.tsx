@@ -3,19 +3,20 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '../ui/form'
 import { Input } from '../ui/input'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useCategories } from '@/services/categories'
 import { ICategory } from '@/interfaces/Category'
 import { Button } from '../ui/button'
 import { CheckCircle } from 'lucide-react'
 import { QuestionAnswersField } from './QuestionAnswersField'
 import useDebounce from '@/hooks/useDebounce'
-import { useCreateQuestion } from '@/services/questions'
-import { useNavigate } from 'react-router-dom'
+import { useCreateQuestion, useQuestion, useUpdateQuestion } from '@/services/questions'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { MultiSelect } from '../ui/multi-select'
 
-export const CreateQuestionFormSchema = z
+export const QuestionFormSchema = z
     .object({
+        id: z.string().uuid().optional().nullable(),
         question: z.string(),
         material: z.string().optional().nullable(),
         categories: z.array(z.string()).nullable(),
@@ -39,21 +40,33 @@ export const CreateQuestionFormSchema = z
     )
 
 export function QuestionForm() {
+    const navigate = useNavigate()
+
+    const [params] = useSearchParams()
+    const questionParam = params.get('question')
+    const question = useQuestion(questionParam ?? '')
+
     const [category, setCategory] = useState('')
     const debouncedCategory = useDebounce(category, 700)
     const categories = useCategories(debouncedCategory)
 
     const createQuestion = useCreateQuestion()
+    const updateQuestion = useUpdateQuestion()
 
-    const navigate = useNavigate()
-
-    const form = useForm<z.infer<typeof CreateQuestionFormSchema>>({
-        resolver: zodResolver(CreateQuestionFormSchema)
+    const form = useForm<z.infer<typeof QuestionFormSchema>>({
+        resolver: zodResolver(QuestionFormSchema)
     })
-    const [selectedOption, setSelectedOption] = useState<string[]>([])
 
-    function create(values: z.infer<typeof CreateQuestionFormSchema>) {
+    function create(values: z.infer<typeof QuestionFormSchema>) {
         createQuestion.mutate(values, {
+            onSuccess: () => {
+                navigate('/', { replace: true })
+            }
+        })
+    }
+
+    function update(values: z.infer<typeof QuestionFormSchema>) {
+        updateQuestion.mutate(values, {
             onSuccess: () => {
                 navigate('/', { replace: true })
             }
@@ -64,16 +77,38 @@ export function QuestionForm() {
         setCategory(value)
     }
 
-    const categoryItems = categories.isSuccess
-        ? categories.data.categories.map((category: ICategory) => ({
-              value: category.id, // Use o campo "id" como chave
-              label: category.title // Use o campo "title" como valor
-          }))
-        : []
+    const mapCategories = (data: Array<any>) => {
+        return data.map((category: ICategory) => ({
+            value: category.id, // Use o campo "id" como chave
+            label: category.title // Use o campo "title" como valor
+        }))
+    }
+
+    const categoryItems = categories.isSuccess ? mapCategories(categories.data.categories) : []
+
+    useEffect(() => {
+        if (question.isSuccess && question.data) {
+            form.reset({
+                id: question.data.id,
+                question: question.data.question,
+                material: question.data.material,
+                categories: question.data.categories.map((c: ICategory) => c.id),
+                answers: question.data.answers,
+                correct: question.data.correct_answer_id
+            })
+        }
+    }, [question.isSuccess, question.data, form])
+
+    if (questionParam && question.isLoading) {
+        return 'Carregando...'
+    }
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(create)} className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5">
+            <form
+                onSubmit={form.handleSubmit(questionParam ? update : create)}
+                className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5"
+            >
                 <FormField
                     name="question"
                     control={form.control}
@@ -117,7 +152,6 @@ export function QuestionForm() {
                             <FormControl>
                                 <MultiSelect
                                     multiple={true}
-                                    clearable={true}
                                     onSearchChange={searchCategories}
                                     emptyText="Nenhuma categoria encontrada"
                                     searchPlaceholder="Pesquisar"
@@ -131,6 +165,7 @@ export function QuestionForm() {
                     )}
                 />
                 <QuestionAnswersField
+                    disabled={questionParam ? true : false}
                     form={form}
                     name="answers"
                     onCorrectSelect={(selected: number) => form.setValue('correct', selected)}
