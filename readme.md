@@ -9,7 +9,6 @@
 -   [Sobre](#sobre)
 -   [Tecnologias](#tecnologias)
 -   [Funcionalidades](#funcionalidades)
--   [Instalação](#instalação)
 
 ## 📝 Sobre
 
