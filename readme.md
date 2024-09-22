@@ -1,8 +1,9 @@
 # 🚀 Projeto de Questões de Tecnologia
 
-<p align="center">
+<p align="start">
   <img src="./public/preview.gif" alt="Demonstração do Projeto" width="600">
 </p>
+
 ## 📋 Índice
 
 -   [Sobre](#sobre)
