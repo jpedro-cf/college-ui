@@ -22,7 +22,7 @@ export const answerQuestion = async (data: z.infer<typeof AnswerQuestionFormSche
 
 export const useAnswersPerformance = (date: Date) => {
     const submit = async () => {
-        const res = await axios.get(env.base_url + '/performance', {
+        const res = await axios.get(env.base_url + '/answers/performance', {
             params: {
                 date: date.toISOString()
             },
