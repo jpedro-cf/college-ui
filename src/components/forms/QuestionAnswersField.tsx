@@ -12,7 +12,7 @@ const optionProperties = cva(
     {
         variants: {
             active: {
-                true: 'bg-primary-200 dark:bg-primary-200 border border-primary-500 text-primary-600',
+                true: 'bg-primary-200 dark:bg-primary-100 border border-primary-500 text-primary-600',
                 false: 'bg-slate-200 dark:bg-stone-700 border-primary-300 dark:border-stone-700'
             }
         },
@@ -36,7 +36,6 @@ interface Props {
 
 export function QuestionAnswersField({ onCorrectSelect, form, name, disabled }: Props) {
     const [input, setInput] = useState('')
-    const selected = form.getValues('correct')
 
     const {
         control,
@@ -68,7 +67,8 @@ export function QuestionAnswersField({ onCorrectSelect, form, name, disabled }: 
     }
 
     const items = watch(name)
-
+    const selected = watch('correct')
+    console.log(selected)
     return (
         <>
             <div className="flex items-end gap-3 col-span-3">
@@ -91,18 +91,18 @@ export function QuestionAnswersField({ onCorrectSelect, form, name, disabled }: 
             )}
             <RadioGroup
                 onValueChange={(value) => {
-                    onCorrectSelect(Number(value))
-                    form.setValue('correct', Number(value))
+                    const selectedValue = Number(value)
+                    onCorrectSelect(selectedValue)
                 }}
                 value={selected?.toString()}
                 className="w-full"
             >
                 {items?.map((item: IAnswer, i: number) => (
-                    <div className="flex w-full" key={i}>
+                    <div className="flex w-full" key={item.id}>
                         <FormLabel
                             htmlFor={`answer-${item.id}`}
                             className={optionProperties({
-                                active: selected === i + 1
+                                active: selected == item.id
                             })}
                         >
                             <RadioGroupItem
@@ -115,20 +115,20 @@ export function QuestionAnswersField({ onCorrectSelect, form, name, disabled }: 
                         <Input
                             value={item.title}
                             onChange={(event) => {
-                                const updatedItems = [...items] // Cria uma cópia do array de items
-                                updatedItems[i].title = event.currentTarget.value // Atualiza o título no item correto
-                                setValue(name, updatedItems) // Usa o setValue para atualizar o formulário
+                                const updatedItems = [...items]
+                                updatedItems[i].title = event.currentTarget.value
+                                setValue(name, updatedItems)
                             }}
                             placeholder="Resposta"
                             className="h-full rounded-e-none rounded-s-none"
                         />
                         <Button
-                            size={'icon'}
-                            variant={'destructive'}
+                            size="icon"
+                            variant="destructive"
                             className="w-10 rounded-s-none h-full"
                             onClick={() => deleteItem(i)}
                         >
-                            <XCircle size={16} />{' '}
+                            <XCircle size={16} />
                         </Button>
                     </div>
                 ))}

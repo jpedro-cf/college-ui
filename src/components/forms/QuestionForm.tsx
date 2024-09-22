@@ -168,7 +168,9 @@ export function QuestionForm() {
                     disabled={questionParam ? true : false}
                     form={form}
                     name="answers"
-                    onCorrectSelect={(selected: number) => form.setValue('correct', selected)}
+                    onCorrectSelect={(selected: number) => {
+                        form.setValue('correct', selected)
+                    }}
                 />
                 <div className="col-span-3">
                     <Button variant={'primary'} type="submit" disabled={createQuestion.isPending}>
