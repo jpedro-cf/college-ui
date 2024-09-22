@@ -31,4 +31,4 @@ Este projeto utiliza as seguintes tecnologias e ferramentas:
 -   📋 **Banco de Questões**: Permite aos usuários responderem questões de múltipla escolha em várias áreas de tecnologia.
 -   📊 **Gráficos de Desempenho**: Exibe gráficos de performance, permitindo que os usuários acompanhem seu progresso ao longo do tempo.
 -   🔍 **Feedback Imediato**: Os usuários recebem feedback imediato após responder uma questão.
--   🏆 **Rankings e Desafios**: Comparação de performance entre usuários e criação de desafios para incentivar a competição saudável (Em desenvolvimento).
+-   🏆 **Rankings e Desafios**: Comparação de performance entre usuários e criação de desafios para incentivar a competição saudável (Ainda em desenvolvimento).
