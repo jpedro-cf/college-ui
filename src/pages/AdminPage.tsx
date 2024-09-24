@@ -1,24 +1,35 @@
+import { CategoriesForm } from '@/components/forms/CategoriesForm'
 import { QuestionForm } from '@/components/forms/QuestionForm'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 export function AdminPage() {
+    const [params] = useSearchParams()
+    const [tab, setTab] = useState(() => {
+        const firstParam = Array.from(params.entries())[0] ?? ['question'] // Converte o iterador em um array
+        return firstParam[0]
+    })
+
     return (
         <>
             <h2 className="font-semibold text-xl">Administração</h2>
             <span className="text-sm">
                 Organize, edite e controle todas as questões, categorias de conteúdo e usuários da plataforma.
             </span>
-            <Tabs defaultValue="questions" className="w-full mt-5">
+            <Tabs defaultValue={tab} className="w-full mt-5">
                 <TabsList>
-                    <TabsTrigger value="questions">Questões</TabsTrigger>
-                    <TabsTrigger value="categories">Categorias</TabsTrigger>
-                    <TabsTrigger value="users">Usuários</TabsTrigger>
+                    <TabsTrigger value="question">Questões</TabsTrigger>
+                    <TabsTrigger value="category">Categorias</TabsTrigger>
+                    <TabsTrigger value="user">Usuários</TabsTrigger>
                 </TabsList>
-                <TabsContent value="questions">
+                <TabsContent value="question">
                     <QuestionForm />
                 </TabsContent>
-                <TabsContent value="categories"></TabsContent>
-                <TabsContent value="users"></TabsContent>
+                <TabsContent value="category">
+                    <CategoriesForm />
+                </TabsContent>
+                <TabsContent value="user"></TabsContent>
             </Tabs>
         </>
     )

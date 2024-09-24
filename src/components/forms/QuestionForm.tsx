@@ -7,12 +7,13 @@ import { useEffect, useState } from 'react'
 import { useCategories } from '@/services/categories'
 import { ICategory } from '@/interfaces/Category'
 import { Button } from '../ui/button'
-import { CheckCircle } from 'lucide-react'
+import { CheckCircle, XCircle } from 'lucide-react'
 import { QuestionAnswersField } from './QuestionAnswersField'
 import useDebounce from '@/hooks/useDebounce'
-import { useCreateQuestion, useQuestion, useUpdateQuestion } from '@/services/questions'
+import { useCreateQuestion, useDeleteQuestion, useQuestion, useUpdateQuestion } from '@/services/questions'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { MultiSelect } from '../ui/multi-select'
+import { ConfirmationDialog } from '../global/ConfirmationDialog'
 
 export const QuestionFormSchema = z
     .object({
@@ -52,6 +53,7 @@ export function QuestionForm() {
 
     const createQuestion = useCreateQuestion()
     const updateQuestion = useUpdateQuestion()
+    const deleteQuestion = useDeleteQuestion()
 
     const form = useForm<z.infer<typeof QuestionFormSchema>>({
         resolver: zodResolver(QuestionFormSchema)
@@ -71,6 +73,16 @@ export function QuestionForm() {
                 navigate('/', { replace: true })
             }
         })
+    }
+
+    function handleDelete(id: string) {
+        if (id) {
+            deleteQuestion.mutate(id, {
+                onSuccess: () => {
+                    navigate('/', { replace: true })
+                }
+            })
+        }
     }
 
     function searchCategories(value: string) {
@@ -172,10 +184,19 @@ export function QuestionForm() {
                         form.setValue('correct', selected)
                     }}
                 />
-                <div className="col-span-3">
+                <div className="col-span-3 space-x-3">
                     <Button variant={'primary'} type="submit" disabled={createQuestion.isPending}>
                         Enviar <CheckCircle size={16} className="ms-3" />{' '}
                     </Button>
+                    {questionParam && question.isSuccess && (
+                        <ConfirmationDialog
+                            variant={'destructive' as any}
+                            label="Deletar"
+                            icon={<XCircle className="ms-2" size={16} />}
+                            disabled={deleteQuestion.isPending}
+                            onConfirmation={() => handleDelete(form.getValues('id') ?? '')}
+                        />
+                    )}
                 </div>
             </form>
         </Form>

@@ -6,6 +6,7 @@ import { RegisterPage } from './pages/RegisterPage'
 import { Layout } from './components/global/Layout'
 import { QuestionsPage } from './pages/QuestionsPage'
 import { AdminPage } from './pages/AdminPage'
+import { CategoriesPage } from './pages/CategoriesPage'
 
 const router = createBrowserRouter([
     {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
     {
         path: '/',
         element: <Layout children={<QuestionsPage />} />
+    },
+    {
+        path: '/categorias',
+        element: <Layout children={<CategoriesPage />} />
     },
     {
         path: '/registrar',

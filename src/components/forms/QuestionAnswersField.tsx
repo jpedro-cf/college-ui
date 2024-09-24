@@ -68,7 +68,7 @@ export function QuestionAnswersField({ onCorrectSelect, form, name, disabled }: 
 
     const items = watch(name)
     const selected = watch('correct')
-    console.log(selected)
+
     return (
         <>
             <div className="flex items-end gap-3 col-span-3">

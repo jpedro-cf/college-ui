@@ -47,6 +47,32 @@ export const useCreateQuestion = () => {
         }
     })
 }
+
+export const useDeleteQuestion = () => {
+    const submit = async (id: string) => {
+        const res = await axios.delete(env.base_url + '/questions/' + id, { withCredentials: true })
+        return res.data
+    }
+    return useMutation({
+        mutationFn: submit,
+        mutationKey: ['questions'],
+        onSuccess: () => {
+            toast({
+                title: 'Deletado!',
+                variant: 'success',
+                description: 'Questão deletada com sucesso.'
+            })
+        },
+        onError: (error: any) => {
+            toast({
+                variant: 'destructive',
+                title: 'Erro!',
+                description: error.response?.data?.message ?? 'Erro ao realizar operação.'
+            })
+        }
+    })
+}
+
 export const useUpdateQuestion = () => {
     const updatedQuestion = async (data: z.infer<typeof QuestionFormSchema>) => {
         const res = await axios.put(env.base_url + '/questions/' + data.id, data, { withCredentials: true })
