@@ -20,7 +20,7 @@ export const QuestionFormSchema = z
         id: z.string().uuid().optional().nullable(),
         question: z.string(),
         material: z.string().optional().nullable(),
-        categories: z.array(z.string()).nullable(),
+        categories: z.array(z.string()).optional().nullable(),
         answers: z.array(
             z.object({
                 id: z.number(),
@@ -185,7 +185,11 @@ export function QuestionForm() {
                     }}
                 />
                 <div className="col-span-3 space-x-3">
-                    <Button variant={'primary'} type="submit" disabled={createQuestion.isPending}>
+                    <Button
+                        variant={'primary'}
+                        type="submit"
+                        disabled={createQuestion.isPending || updateQuestion.isPending}
+                    >
                         Enviar <CheckCircle size={16} className="ms-3" />{' '}
                     </Button>
                     {questionParam && question.isSuccess && (

@@ -7,6 +7,7 @@ import { Layout } from './components/global/Layout'
 import { QuestionsPage } from './pages/QuestionsPage'
 import { AdminPage } from './pages/AdminPage'
 import { CategoriesPage } from './pages/CategoriesPage'
+import { ProfilePage } from './pages/ProfilePage'
 
 const router = createBrowserRouter([
     {
@@ -30,8 +31,14 @@ const router = createBrowserRouter([
         element: <LoginPage />
     },
     {
+        path: '/perfil/:id',
+        element: (
+            <ProtectedRoute roles={['student', 'admin', 'manager']} children={<Layout children={<ProfilePage />} />} />
+        )
+    },
+    {
         path: '/admin',
-        element: <ProtectedRoute roles={['admin']} children={<Layout children={<AdminPage />} />} />
+        element: <ProtectedRoute roles={['admin', 'manager']} children={<Layout children={<AdminPage />} />} />
     }
 ])
 

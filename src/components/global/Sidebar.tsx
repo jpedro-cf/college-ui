@@ -90,7 +90,7 @@ export const Sidebar = () => {
                             Categorias
                         </NavLink>
                     </li>
-                    {auth.user?.roles.includes('admin') && (
+                    {auth.user?.roles.some((r) => ['admin', 'manager'].includes(r)) && (
                         <li>
                             <NavLink
                                 to="/admin"

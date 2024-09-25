@@ -1,6 +1,7 @@
 import { CategoriesForm } from '@/components/forms/CategoriesForm'
 import { QuestionForm } from '@/components/forms/QuestionForm'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { UsersList } from '@/components/users/UsersList'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
@@ -29,7 +30,9 @@ export function AdminPage() {
                 <TabsContent value="category">
                     <CategoriesForm />
                 </TabsContent>
-                <TabsContent value="user"></TabsContent>
+                <TabsContent value="user">
+                    <UsersList />
+                </TabsContent>
             </Tabs>
         </>
     )

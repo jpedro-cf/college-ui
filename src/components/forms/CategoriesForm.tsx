@@ -88,7 +88,7 @@ export function CategoriesForm() {
                         </FormItem>
                     )}
                 />
-                <Button variant={'primary'}>
+                <Button variant={'primary'} disabled={createCategory.isPending || updateCategory.isPending}>
                     Enviar <CheckCircle className="ms-3" size={16} />{' '}
                 </Button>
                 {categoryParam && category.isSuccess && (

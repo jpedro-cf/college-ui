@@ -16,7 +16,7 @@ export default function ProtectedRoute({ children, roles }: Props) {
         if (user === null) {
             navigate('/', { replace: true })
         }
-        if (!user?.roles.every((r) => roles.includes(r))) {
+        if (!user?.roles.some((r) => roles.includes(r))) {
             navigate('/', { replace: true })
         }
     }, [navigate, user])

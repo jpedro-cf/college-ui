@@ -20,6 +20,7 @@ type ComboboxPropsSingle = {
     emptyText?: string
     selectPlaceholder?: string
     searchPlaceholder?: string
+    shouldFilter?: boolean
     multiple?: false
     value?: string
     onSearchChange?: (value: string) => void
@@ -31,6 +32,7 @@ type ComboboxPropsMultiple = {
     emptyText?: string
     selectPlaceholder?: string
     searchPlaceholder?: string
+    shouldFilter?: boolean
     multiple: true
     value?: string[]
     onSearchChange?: (value: string) => void
@@ -87,7 +89,7 @@ export const MultiSelect = forwardRef((props: ComboboxProps, ref: React.Forwarde
                 </Button>
             </PopoverTrigger>
             <PopoverContent align="start" className="p-0 popover-content-width-full">
-                <Command shouldFilter={false}>
+                <Command shouldFilter={props.shouldFilter ?? false}>
                     <CommandInput
                         ref={ref}
                         placeholder={props.searchPlaceholder ?? 'Search for an option'}
