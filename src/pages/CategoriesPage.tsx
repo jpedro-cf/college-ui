@@ -1,18 +1,36 @@
 import { CategoryCard } from '@/components/categories/Card'
+import { Filter } from '@/components/global/Filter'
 import { SkeletonCard } from '@/components/skeletons/SkeletonCard'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { ICategory } from '@/interfaces/Category'
 import { useCategories } from '@/services/categories'
 import { InfoIcon } from 'lucide-react'
+import { useSearchParams } from 'react-router-dom'
 
 export function CategoriesPage() {
-    const categories = useCategories('')
+    const categories = useCategories(null)
+    const filterGroups = [
+        {
+            name: 'Data',
+            key: 'date',
+            options: [
+                {
+                    label: 'Mais recentes',
+                    value: 'desc'
+                },
+                {
+                    label: 'Mais antigos',
+                    value: 'asc'
+                }
+            ]
+        }
+    ]
 
     return (
         <>
             <h2 className="font-semibold text-xl">Todas as categorias</h2>
             <span className="text-sm">Veja todas as categorias que fazem parte do nosso sistema.</span>
-
+            <Filter search={true} toParams={true} groups={filterGroups} />
             {(categories.isLoading || categories.isRefetching) && (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-9 mt-3">
                     {Array.from({ length: 6 }, (_, i) => i + 1).map((item) => (

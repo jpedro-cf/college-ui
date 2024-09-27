@@ -3,13 +3,17 @@ import { toast } from '@/components/ui/use-toast'
 import { env } from '@/config/env'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import { useSearchParams } from 'react-router-dom'
 import { z } from 'zod'
 
-export const useCategories = (search: string) => {
+export const useCategories = (search: string | null) => {
+    const [searchParams, setSearchParams] = useSearchParams()
     const submit = async () => {
+        const s = search ?? searchParams.get('search')
         const res = await axios.get(env.base_url + '/categories', {
             params: {
-                search: search ?? '',
+                search: s ?? '',
+                order: searchParams.get('date') ?? 'desc',
                 per_page: 50
             },
             withCredentials: true
@@ -17,7 +21,7 @@ export const useCategories = (search: string) => {
         return res.data
     }
     return useQuery({
-        queryKey: ['categories', search],
+        queryKey: ['categories', search, searchParams.get('search'), searchParams.get('date')],
         queryFn: submit,
         refetchOnWindowFocus: false,
         retry: false

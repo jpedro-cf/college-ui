@@ -101,7 +101,7 @@ export function ProfilePage() {
                             <FormItem>
                                 <FormLabel>Nova senha:</FormLabel>
                                 <FormControl>
-                                    <Input value={field.value ?? undefined} onChange={field.onChange} />
+                                    <Input type="password" value={field.value ?? undefined} onChange={field.onChange} />
                                 </FormControl>
                             </FormItem>
                         )}
