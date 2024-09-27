@@ -35,7 +35,7 @@ export function ProfilePage() {
     function handleUpdate(values: z.infer<typeof UserForm>) {
         updateUser.mutate(values, {
             onSuccess: () => {
-                navigate('/', { replace: true })
+                navigate('/admin', { replace: true })
             }
         })
     }

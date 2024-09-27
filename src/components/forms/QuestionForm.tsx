@@ -104,7 +104,7 @@ export function QuestionForm() {
                 id: question.data.id,
                 question: question.data.question,
                 material: question.data.material,
-                categories: question.data.categories.map((c: ICategory) => c.id),
+                categories: question.data.categories?.map((c: ICategory) => c.id),
                 answers: question.data.answers,
                 correct: question.data.correct_answer_id
             })
@@ -119,7 +119,7 @@ export function QuestionForm() {
         <Form {...form}>
             <form
                 onSubmit={form.handleSubmit(questionParam ? update : create)}
-                className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5"
+                className="grid grid-cols-1 xl:grid-cols-3 gap-5 mt-5"
             >
                 <FormField
                     name="question"
@@ -184,7 +184,7 @@ export function QuestionForm() {
                         form.setValue('correct', selected)
                     }}
                 />
-                <div className="col-span-3 space-x-3">
+                <div className="lg:col-span-3 space-x-3">
                     <Button
                         variant={'primary'}
                         type="submit"

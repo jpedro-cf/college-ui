@@ -3,7 +3,6 @@ import { Moon, Sun } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { useTheme } from '@/context/ThemeContext'
-
 export function ThemeToggler() {
     const { setTheme } = useTheme()
 
@@ -13,7 +12,7 @@ export function ThemeToggler() {
                 <Button
                     variant="outline"
                     size={'icon'}
-                    className="mb-5 text-start w-7 h-7 bg-white border-none dark:bg-stone-700"
+                    className="text-start w-7 h-7 bg-white border-slate-100 dark:border-stone-700 dark:bg-stone-700"
                 >
                     <Sun size={14} className="dark:hidden" />
                     <Moon size={14} className="hidden dark:block" />

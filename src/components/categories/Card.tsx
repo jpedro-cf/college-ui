@@ -11,7 +11,7 @@ interface Props {
 }
 export function CategoryCard({ category }: Props) {
     const auth = useAuth()
-    const isAdmin = useMemo(() => auth.user?.roles.includes('admin'), [auth.user])
+    const isAdmin = useMemo(() => auth.user?.roles.some((r) => ['admin', 'manager'].includes(r)), [auth.user])
     return (
         <Card className="border bg-none border-stone-200 dark:border-stone-700">
             <CardHeader className="pb-3">
@@ -31,7 +31,7 @@ export function CategoryCard({ category }: Props) {
                         </Button>
                     </NavLink>
                 )}
-                <NavLink to={`/?categories=[${category.id}]`}>
+                <NavLink to={`/?category=${category.id}`}>
                     <Button variant={'primary'} size={'sm'}>
                         Ver questões <GalleryVerticalEnd size={14} className="ms-3" />
                     </Button>

@@ -26,15 +26,17 @@ const linksProperties = cva('flex items-center text-sm gap-2 font-semibold py-1 
 export const Sidebar = () => {
     const auth = useAuth()
     return (
-        <aside className="sidebar fixed top-0 left-0 hidden lg:flex flex-col p-5 w-[225px] min-h-screen">
-            <div className="flex justify-between mb-5 border-b border-dashed border-stone-300 dark:border-stone-600">
+        <aside className="sidebar fixed top-0 left-0 hidden xl:flex flex-col p-5 w-[225px] min-h-screen">
+            <div className="flex justify-between pb-3 mb-5 border-b border-dashed border-stone-300 dark:border-stone-600">
                 {auth.user && (
                     <div className="flex gap-3 text-xs">
-                        <Avatar className="w-8 h-8">
-                            <AvatarFallback className="bg-primary text-slate-100">
-                                {auth.user.name.split('')[0].toUpperCase()}
-                            </AvatarFallback>
-                        </Avatar>
+                        <NavLink to={`/perfil/${auth.user.id}`}>
+                            <Avatar className="w-8 h-8">
+                                <AvatarFallback className="bg-primary text-slate-100">
+                                    {auth.user.name.split('')[0].toUpperCase()}
+                                </AvatarFallback>
+                            </Avatar>
+                        </NavLink>
                         <div>
                             <span className="block max-w-[80px] truncate text-ellipsis whitespace-nowrap font-semibold">
                                 {auth.user.name}

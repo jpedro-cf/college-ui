@@ -14,7 +14,7 @@ interface Props {
 
 export function QuestionsCard({ question }: Props) {
     const auth = useAuth()
-    const isAdmin = useMemo(() => auth.user?.roles.includes('admin'), [auth.user])
+    const isAdmin = useMemo(() => auth.user?.roles.some((r) => ['admin', 'manager'].includes(r)), [auth.user])
     return (
         <Card className="border bg-none border-stone-200 dark:border-stone-700">
             <CardHeader className="pb-2">

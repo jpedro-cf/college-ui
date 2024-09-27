@@ -71,7 +71,10 @@ export function CategoriesForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(categoryParam ? update : create)} className="flex items-end gap-3">
+            <form
+                onSubmit={form.handleSubmit(categoryParam ? update : create)}
+                className="flex flex-col sm:flex-row items-start sm:items-end gap-3"
+            >
                 <FormField
                     name="title"
                     control={form.control}

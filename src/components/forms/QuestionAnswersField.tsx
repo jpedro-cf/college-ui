@@ -71,7 +71,7 @@ export function QuestionAnswersField({ onCorrectSelect, form, name, disabled }: 
 
     return (
         <>
-            <div className="flex items-end gap-3 col-span-3">
+            <div className="flex items-end gap-3 lg:col-span-3">
                 <FormItem>
                     <FormLabel>Adicionar respostas *</FormLabel>
                     <Input

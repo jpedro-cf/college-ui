@@ -22,7 +22,7 @@ export function UserAnswers() {
         <>
             {(answers.isLoading || answers.isRefetching) && <SkeletonList />}
             {answers.isSuccess && (
-                <div className="grid grid-cols-2 gap-5 mt-5">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
                     {answers.data.answers.map((answer: IAnswer) => (
                         <AnswerCard answer={answer} />
                     ))}

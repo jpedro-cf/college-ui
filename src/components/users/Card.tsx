@@ -23,7 +23,7 @@ export function UserCard({ user }: Props) {
             <CardContent className="pb-3">
                 <span className="text-sm text-foreground/60">Cargos</span>
                 <div className="flex flex-wrap mt-1 gap-1">
-                    {user.roles.map((role, i) => (
+                    {user.roles?.map((role, i) => (
                         <Badge key={i} variant={'outline'}>
                             {role}
                         </Badge>
