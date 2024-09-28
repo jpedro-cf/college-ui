@@ -14,6 +14,7 @@ import {
 import { useAuth } from '@/context/AuthContext'
 import { cva } from 'class-variance-authority'
 import { AlignJustify, GalleryVerticalEnd, Home, List, ShieldCheck } from 'lucide-react'
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
 const linksProperties = cva('flex items-center text-sm gap-2 font-semibold py-2  px-3 rounded-md', {
@@ -34,15 +35,16 @@ const linksProperties = cva('flex items-center text-sm gap-2 font-semibold py-2 
 })
 
 export function SheetSidebar() {
+    const [open, setOpen] = useState(false)
     const auth = useAuth()
     return (
-        <Sheet>
+        <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
                 <Button variant="outline" size={'icon'}>
                     <AlignJustify />
                 </Button>
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent className="dark:bg-stone-950 border-none">
                 <SheetHeader className="m-0">
                     <SheetTitle></SheetTitle>
                     <SheetDescription></SheetDescription>
@@ -51,6 +53,7 @@ export function SheetSidebar() {
                     <ul className="flex flex-col gap-3">
                         <li>
                             <NavLink
+                                onClick={() => setOpen(false)}
                                 to="/dashboard"
                                 className={({ isActive, isPending }) =>
                                     linksProperties({ active: isActive, pending: isPending })
@@ -62,6 +65,7 @@ export function SheetSidebar() {
                         </li>
                         <li>
                             <NavLink
+                                onClick={() => setOpen(false)}
                                 to="/"
                                 className={({ isActive, isPending }) =>
                                     linksProperties({ active: isActive, pending: isPending })
@@ -73,6 +77,7 @@ export function SheetSidebar() {
                         </li>
                         <li>
                             <NavLink
+                                onClick={() => setOpen(false)}
                                 to="/categorias"
                                 className={({ isActive, isPending }) =>
                                     linksProperties({ active: isActive, pending: isPending })
@@ -85,6 +90,7 @@ export function SheetSidebar() {
                         {auth.user?.roles.some((r) => ['admin', 'manager'].includes(r)) && (
                             <li>
                                 <NavLink
+                                    onClick={() => setOpen(false)}
                                     to="/admin"
                                     className={({ isActive, isPending }) =>
                                         linksProperties({ active: isActive, pending: isPending })

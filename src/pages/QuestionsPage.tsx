@@ -1,4 +1,5 @@
 import { Filter } from '@/components/global/Filter'
+import { Pagination } from '@/components/global/Pagination'
 import { QuestionsCard } from '@/components/questions/Card'
 import { SkeletonCard } from '@/components/skeletons/SkeletonCard'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -77,6 +78,7 @@ export function QuestionsPage() {
                     ))}
                 </div>
             )}
+            <Pagination />
         </>
     )
 }

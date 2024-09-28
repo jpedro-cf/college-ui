@@ -52,7 +52,6 @@ export function Filter({ search, groups, ...props }: Props) {
         if (props.toParams) {
             const currentParams = Object.fromEntries(searchParams.entries())
             // Atualiza os parâmetros mantendo os antigos e adicionando o novo
-            // Atualiza os parâmetros mantendo os antigos e adicionando o novo
             setSearchParams({ ...currentParams, [group.key]: selectedValue ?? null })
         }
     }
@@ -85,17 +84,17 @@ export function Filter({ search, groups, ...props }: Props) {
     }, [searchDebounce])
 
     return (
-        <div className="mt-3 flex items-center gap-3">
+        <div className="mt-3 flex items-center gap-3 max-w-full">
             {search && (
                 <Input
                     placeholder="Pesquisar"
-                    className="w-auto"
+                    className="w-auto max-w-[190px]"
                     onChange={(event) => setSearchString(event.currentTarget.value)}
                 />
             )}
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="outline">
+                    <Button variant="outline" size={'sm'} className="h-9">
                         Filtrar <ChevronsUpDown className="ms-2" size={12} />{' '}
                     </Button>
                 </DropdownMenuTrigger>

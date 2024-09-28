@@ -7,6 +7,8 @@ import { NavLink } from 'react-router-dom'
 import { AnswerQuestionDialog } from './AnswerQuestionDialog'
 import { useMemo } from 'react'
 import { useAuth } from '@/context/AuthContext'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 
 interface Props {
     question: IQuestion
@@ -18,11 +20,14 @@ export function QuestionsCard({ question }: Props) {
     return (
         <Card className="border bg-none border-stone-200 dark:border-stone-700">
             <CardHeader className="pb-2">
-                <CardTitle>
+                <CardTitle className="flex justify-between">
                     <div className="flex gap-1 items-center">
                         <LibraryBig size={18} className="min-w-8" />
                         {question.question}
                     </div>
+                    <span className="text-xs text-primary">
+                        {format(question.createdAt, 'dd LLL yyyy', { locale: ptBR })}
+                    </span>
                 </CardTitle>
                 <CardDescription className="text-primary dark:text-primary-300">
                     {question.answers.length} Opções
