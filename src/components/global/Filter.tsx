@@ -52,7 +52,7 @@ export function Filter({ search, groups, ...props }: Props) {
         if (props.toParams) {
             const currentParams = Object.fromEntries(searchParams.entries())
             // Atualiza os parâmetros mantendo os antigos e adicionando o novo
-            setSearchParams({ ...currentParams, [group.key]: selectedValue ?? null })
+            setSearchParams({ ...currentParams, [group.key]: selectedValue ?? null, page: '1' })
         }
     }
 
@@ -67,7 +67,7 @@ export function Filter({ search, groups, ...props }: Props) {
 
         if (props.toParams) {
             const currentParams = Object.fromEntries(searchParams.entries())
-            setSearchParams({ ...currentParams, search: searchDebounce })
+            setSearchParams({ ...currentParams, search: searchDebounce, page: '1' })
         }
     }
 

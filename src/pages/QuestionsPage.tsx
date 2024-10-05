@@ -1,5 +1,5 @@
 import { Filter } from '@/components/global/Filter'
-import { Pagination } from '@/components/global/Pagination'
+import { PaginationControlled } from '@/components/global/Pagination'
 import { QuestionsCard } from '@/components/questions/Card'
 import { SkeletonCard } from '@/components/skeletons/SkeletonCard'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -10,14 +10,21 @@ import { useCategories } from '@/services/categories'
 import { useQuestions } from '@/services/questions'
 import { InfoIcon } from 'lucide-react'
 import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 export function QuestionsPage() {
     const questions = useQuestions()
+    const [searchParams, setSearchParams] = useSearchParams()
 
     const [search, setSearch] = useState<string | null>(null)
     const debounce = useDebounce(search, 700)
 
     const categories = useCategories(debounce ?? '')
+
+    const handlePageChange = (value: number) => {
+        const currentParams = Object.fromEntries(searchParams.entries())
+        setSearchParams({ ...currentParams, page: value.toString() })
+    }
 
     const groupOptions =
         categories.data?.categories?.map((c: ICategory) => {
@@ -72,13 +79,22 @@ export function QuestionsPage() {
                 </Alert>
             )}
             {questions.isSuccess && questions.data?.questions?.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3  gap-9 mt-5">
-                    {questions.data.questions.map((question: IQuestion, index: number) => (
-                        <QuestionsCard question={question} key={index} />
-                    ))}
-                </div>
+                <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3  gap-9 mt-5 mb-8">
+                        {questions.data.questions.map((question: IQuestion, index: number) => (
+                            <QuestionsCard question={question} key={index} />
+                        ))}
+                    </div>
+                    {questions.data.pages > 1 && (
+                        <PaginationControlled
+                            current={Number(searchParams.get('page') ?? 1)}
+                            siblings={1}
+                            onPageChange={handlePageChange}
+                            total={questions.data.pages}
+                        />
+                    )}
+                </>
             )}
-            <Pagination />
         </>
     )
 }

@@ -12,6 +12,7 @@ export const useQuestions = () => {
     const submit = async () => {
         const res = await axios.get(env.base_url + '/questions', {
             params: {
+                current_page: searchParams.get('page') ?? 1,
                 search: searchParams.get('search') ?? '',
                 order: searchParams.get('date') ?? 'desc',
                 category: searchParams.get('category') ?? null
@@ -22,7 +23,13 @@ export const useQuestions = () => {
     }
     return useQuery({
         queryFn: submit,
-        queryKey: ['questions', searchParams.get('search'), searchParams.get('date'), searchParams.get('category')],
+        queryKey: [
+            'questions',
+            searchParams.get('search'),
+            searchParams.get('date'),
+            searchParams.get('category'),
+            searchParams.get('page')
+        ],
         retry: 2,
         refetchOnWindowFocus: false
     })
